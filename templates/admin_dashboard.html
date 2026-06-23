@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #f6f0dc;
+            /* min-height: 100vh; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+        h1{
+            font-size: 32px;
+            color: #100f0f;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+        header{
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            }
+                nav ul{
+                    list-style: none;
+                    display: flex;
+                }
+                nav ul li{
+                    margin-left: 20px;
+                }
+                nav ul li a{
+                    text-decoration: none;
+                    color: #333;
+                    font-weight: 600;
+                }
+        .manage{
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 80%;
+        }
+        .cards{
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+            .staff-cards div{
+                background-color: #f2f2f2;
+                padding: 20px;
+                border-radius: 5px;
+                width: 45%;
+                text-align: center;
+            }
+            .staff-cards div h3, .staff-cards div h5{
+                margin-bottom: 10px;
+            }
+            .staff-cards div p{
+                margin-bottom: 20px;
+            }
+            .staff-cards div{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+
+            }
+
+
+        a{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 10px;
+        }
+        a:hover{
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'view_leaves' %}">View Leave Request</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="manage">
+        <div class="cards">
+            <div class="leave-request">
+                <h3>Total leave request</h3>
+                <p>Manage all Staff request</p>
+                <a href = "{% url 'view_leaves' %}">Open</a>
+            </div>
+
+            <div class="staff-manage">
+                <h3>Manage Staff</h3>
+                <p>View register staff users</p>
+                <a href = "{% url 'manage_staff' %}">Manage Staff</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

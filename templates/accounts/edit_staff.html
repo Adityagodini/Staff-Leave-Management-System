@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Staff</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #d0c6a6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+        h2{
+            font-size: 1.5rem;
+            color: #070505;
+            margin-bottom: 30px;
+            font-weight: 900;
+        }
+        form{
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label{
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select{
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button{
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button:hover{
+            background-color: #0056b3;
+        }
+        a{
+            display: inline-block;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+        
+
+    
+    </style>
+</head>
+<body>
+    <h2>Edit Staff</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input type="text" name="username" value="{{ staff.username }}" required>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="" placeholder="Leave blank to keep your current password">
+        <button type="submit">Update Staff</button>
+    </form>
+    <a href="{% url 'manage_staff' %}">Back to manage staff</a>
+</body>
+</html>
