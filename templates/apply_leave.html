@@ -4,58 +4,504 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apply Leave</title>
-    <style>
-        *{
-            margin: 0px;
-            padding: 0px;
-            box-sizing: border-box;
-        }
-        body{
-            background-color: #d0c6a6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+<style>
+    /* ==============================
+       GLOBAL RESET
+    ============================== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+        padding: 40px 20px;
+
+        font-family: "Segoe UI", Arial, sans-serif;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        color: #1e293b;
+
+        background:
+            radial-gradient(
+                circle at top left,
+                rgba(56, 189, 248, 0.20),
+                transparent 32%
+            ),
+            radial-gradient(
+                circle at bottom right,
+                rgba(124, 58, 237, 0.16),
+                transparent 34%
+            ),
+            linear-gradient(
+                135deg,
+                #0f172a,
+                #172554,
+                #1e3a8a
+            );
+
+        position: relative;
+        overflow-x: hidden;
+    }
+
+
+    /* ==============================
+       BACKGROUND GLOW EFFECTS
+    ============================== */
+    body::before {
+        content: "";
+
+        position: fixed;
+
+        width: 380px;
+        height: 380px;
+
+        top: -150px;
+        left: -130px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(14, 165, 233, 0.18);
+
+        filter: blur(60px);
+
+        pointer-events: none;
+    }
+
+    body::after {
+        content: "";
+
+        position: fixed;
+
+        width: 380px;
+        height: 380px;
+
+        right: -130px;
+        bottom: -150px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(139, 92, 246, 0.18);
+
+        filter: blur(65px);
+
+        pointer-events: none;
+    }
+
+
+    /* ==============================
+       PAGE TITLE
+    ============================== */
+    h2 {
+        position: relative;
+        z-index: 1;
+
+        margin-bottom: 25px;
+
+        color: #ffffff;
+
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        font-weight: 800;
+
+        letter-spacing: 0.5px;
+
+        text-align: center;
+
+        text-shadow:
+            0 5px 18px rgba(0, 0, 0, 0.28);
+
+        animation:
+            fadeDown 0.7s ease;
+    }
+
+
+    /* Small SLMS badge */
+    h2::before {
+        content: "SLMS";
+
+        display: block;
+
+        width: fit-content;
+
+        margin: 0 auto 12px;
+
+        padding: 6px 14px;
+
+        border-radius: 20px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #38bdf8,
+                #2563eb
+            );
+
+        color: #ffffff;
+
+        font-size: 0.7rem;
+        font-weight: 800;
+
+        letter-spacing: 2px;
+
+        box-shadow:
+            0 7px 18px rgba(37, 99, 235, 0.30);
+    }
+
+
+    /* ==============================
+       FORM CARD
+    ============================== */
+    form {
+        position: relative;
+        z-index: 1;
+
+        width: min(500px, 100%);
+
+        padding: 34px 32px;
+
+        border-radius: 20px;
+
+        background:
+            rgba(255, 255, 255, 0.96);
+
+        border:
+            1px solid rgba(255, 255, 255, 0.85);
+
+        box-shadow:
+            0 22px 55px rgba(0, 0, 0, 0.25);
+
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        animation:
+            fadeUp 0.85s ease;
+    }
+
+
+    /* Decorative top line */
+    form::before {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        width: 65%;
+        height: 4px;
+
+        border-radius: 0 0 10px 10px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #2563eb,
+                #38bdf8,
+                #7c3aed
+            );
+    }
+
+
+    /* ==============================
+       LABELS
+    ============================== */
+    label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #334155;
+
+        font-size: 0.9rem;
+        font-weight: 700;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    /* ==============================
+       INPUTS, SELECT & TEXTAREA
+    ============================== */
+    input,
+    select,
+    textarea {
+        width: 100%;
+
+        padding: 13px 14px;
+
+        margin-bottom: 18px;
+
+        border:
+            1.5px solid #dbe3ef;
+
+        border-radius: 10px;
+
+        outline: none;
+
+        background: #f8fafc;
+
+        color: #0f172a;
+
+        font-family: inherit;
+        font-size: 0.95rem;
+
+        transition:
+            border-color 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease,
+            transform 0.25s ease;
+    }
+
+
+    /* Select cursor */
+    select {
+        cursor: pointer;
+    }
+
+
+    /* Textarea settings */
+    textarea {
+        min-height: 110px;
+
+        resize: vertical;
+
+        line-height: 1.5;
+    }
+
+
+    /* Hover effect */
+    input:hover,
+    select:hover,
+    textarea:hover {
+        border-color: #93c5fd;
+    }
+
+
+    /* Focus effect */
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #2563eb;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 4px rgba(37, 99, 235, 0.12);
+
+        transform: translateY(-1px);
+    }
+
+
+    /* ==============================
+       DATE INPUT
+    ============================== */
+    input[type="date"] {
+        cursor: pointer;
+
+        color: #475569;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+
+        opacity: 0.7;
+
+        transition:
+            opacity 0.2s ease;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator:hover {
+        opacity: 1;
+    }
+
+
+    /* ==============================
+       SUBMIT BUTTON
+    ============================== */
+    button {
+        width: 100%;
+
+        padding: 14px 18px;
+
+        margin-top: 3px;
+
+        border: none;
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #0ea5e9
+            );
+
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 0.95rem;
+        font-weight: 800;
+
+        letter-spacing: 1px;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 9px 22px rgba(37, 99, 235, 0.28);
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease;
+    }
+
+
+    button:hover {
+        transform: translateY(-3px);
+
+        background:
+            linear-gradient(
+                135deg,
+                #1d4ed8,
+                #0284c7
+            );
+
+        box-shadow:
+            0 13px 28px rgba(37, 99, 235, 0.36);
+    }
+
+
+    button:active {
+        transform: translateY(0);
+    }
+
+
+    /* ==============================
+       ANIMATIONS
+    ============================== */
+    @keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-22px);
         }
-        h2{
-            font-size: 1.5rem;
-            color: #070505;
-            margin-bottom: 30px;
-            font-weight: 900;
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        form{
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
         }
-        label{
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        input, select, textarea{
+    }
+
+
+    /* ==============================
+       TABLET RESPONSIVE
+    ============================== */
+    @media (max-width: 768px) {
+
+        body {
+            padding: 32px 18px;
+        }
+
+        h2 {
+            margin-bottom: 22px;
+        }
+
+        form {
+            padding: 30px 26px;
+        }
+    }
+
+
+    /* ==============================
+       MOBILE RESPONSIVE
+    ============================== */
+    @media (max-width: 480px) {
+
+        body {
+            padding: 25px 14px;
+        }
+
+        h2 {
+            font-size: 2rem;
+
+            margin-bottom: 20px;
+        }
+
+        form {
             width: 100%;
-            padding: 10px;
+
+            padding: 27px 20px;
+
+            border-radius: 16px;
+        }
+
+        label {
+            font-size: 0.86rem;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 12px;
+
             margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+            font-size: 0.9rem;
         }
-        button{
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+
+        textarea {
+            min-height: 100px;
         }
-        button:hover{
-            background-color: #0056b3;
+
+        button {
+            padding: 13px;
+
+            font-size: 0.9rem;
         }
-    </style>
+    }
+
+
+    /* ==============================
+       REDUCED MOTION
+    ============================== */
+    @media (prefers-reduced-motion: reduce) {
+
+        h2,
+        form {
+            animation: none;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            transition: none;
+        }
+    }
+</style>
 </head>
 <body>
     <h2>Apply Leave</h2>
@@ -69,7 +515,7 @@
             <option value = "emergency leave">Emergency Leave</option>
         </select>
         <label>Start Date:</label>
-        <input type="date" requried name = "start_date">
+        <input type="date" required name = "start_date">
         <label>End Date:</label>
         <input type="date" required name = "end_date">
         <label>Reason:</label>

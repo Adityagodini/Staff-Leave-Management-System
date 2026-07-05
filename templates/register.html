@@ -4,70 +4,633 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        *{
-            margin: 0px;
-            padding: 0px;
-            box-sizing: border-box;
-        }
-        body{
-            background-color: #d0c6a6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+<style>
+    /* ==============================
+       GLOBAL RESET
+    ============================== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+        padding: 35px 20px;
+
+        font-family: "Segoe UI", Arial, sans-serif;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+
+        color: #1e293b;
+
+        background:
+            radial-gradient(
+                circle at top left,
+                rgba(56, 189, 248, 0.20),
+                transparent 32%
+            ),
+            radial-gradient(
+                circle at bottom right,
+                rgba(124, 58, 237, 0.16),
+                transparent 34%
+            ),
+            linear-gradient(
+                135deg,
+                #0f172a,
+                #172554,
+                #1e3a8a
+            );
+
+        position: relative;
+        overflow-x: hidden;
+    }
+
+
+    /* ==============================
+       BACKGROUND GLOW
+    ============================== */
+    body::before {
+        content: "";
+
+        position: fixed;
+
+        width: 380px;
+        height: 380px;
+
+        top: -150px;
+        left: -130px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(14, 165, 233, 0.18);
+
+        filter: blur(60px);
+
+        pointer-events: none;
+    }
+
+    body::after {
+        content: "";
+
+        position: fixed;
+
+        width: 380px;
+        height: 380px;
+
+        right: -130px;
+        bottom: -150px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(139, 92, 246, 0.18);
+
+        filter: blur(65px);
+
+        pointer-events: none;
+    }
+
+
+    /* ==============================
+       MAIN TITLE
+    ============================== */
+    h1 {
+        position: relative;
+        z-index: 1;
+
+        margin-bottom: 8px;
+
+        color: #ffffff;
+
+        font-size: clamp(2.4rem, 6vw, 3.8rem);
+        font-weight: 900;
+
+        letter-spacing: 0.8px;
+
+        text-shadow:
+            0 5px 18px rgba(0, 0, 0, 0.28);
+
+        animation:
+            fadeDown 0.7s ease;
+    }
+
+
+    /* SLMS Badge */
+    h1::before {
+        content: "SLMS";
+
+        display: block;
+
+        width: fit-content;
+
+        margin: 0 auto 12px;
+
+        padding: 6px 14px;
+
+        border-radius: 20px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #38bdf8,
+                #2563eb
+            );
+
+        color: #ffffff;
+
+        font-size: 0.7rem;
+        font-weight: 800;
+
+        letter-spacing: 2px;
+
+        box-shadow:
+            0 7px 18px rgba(37, 99, 235, 0.30);
+    }
+
+
+    /* ==============================
+       SUBTITLE
+    ============================== */
+    h2 {
+        position: relative;
+        z-index: 1;
+
+        margin-bottom: 24px;
+
+        color:
+            rgba(255, 255, 255, 0.78);
+
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        font-weight: 500;
+
+        letter-spacing: 0.6px;
+
+        animation:
+            fadeUp 0.8s ease;
+    }
+
+
+    /* ==============================
+       REGISTRATION FORM CARD
+    ============================== */
+    form {
+        position: relative;
+        z-index: 1;
+
+        width: min(440px, 100%);
+
+        padding: 32px;
+
+        border-radius: 20px;
+
+        background:
+            rgba(255, 255, 255, 0.96);
+
+        border:
+            1px solid rgba(255, 255, 255, 0.85);
+
+        box-shadow:
+            0 22px 55px rgba(0, 0, 0, 0.25);
+
+        text-align: left;
+
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        animation:
+            fadeUp 0.9s ease;
+    }
+
+
+    /* Decorative top gradient line */
+    form::before {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        width: 65%;
+        height: 4px;
+
+        border-radius: 0 0 10px 10px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #2563eb,
+                #38bdf8,
+                #7c3aed
+            );
+    }
+
+
+    /* ==============================
+       LABELS
+    ============================== */
+    label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #334155;
+
+        font-size: 0.9rem;
+        font-weight: 700;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    /* ==============================
+       INPUTS & SELECT
+    ============================== */
+    input,
+    select {
+        width: 100%;
+
+        padding: 13px 14px;
+
+        margin-bottom: 4px;
+
+        border:
+            1.5px solid #dbe3ef;
+
+        border-radius: 10px;
+
+        outline: none;
+
+        background: #f8fafc;
+
+        color: #0f172a;
+
+        font-family: inherit;
+        font-size: 0.95rem;
+
+        transition:
+            border-color 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease,
+            transform 0.25s ease;
+    }
+
+
+    input:hover,
+    select:hover {
+        border-color: #93c5fd;
+    }
+
+
+    input:focus,
+    select:focus {
+        border-color: #2563eb;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 4px rgba(37, 99, 235, 0.12);
+
+        transform: translateY(-1px);
+    }
+
+
+    select {
+        cursor: pointer;
+    }
+
+
+    /* ==============================
+       ADMIN INFORMATION MESSAGE
+    ============================== */
+    form p {
+        margin: 14px 0 4px;
+
+        padding: 12px 14px;
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(37, 99, 235, 0.08),
+                rgba(14, 165, 233, 0.08)
+            );
+
+        border:
+            1px solid rgba(37, 99, 235, 0.14);
+
+        color: #475569;
+
+        font-size: 0.84rem;
+        font-weight: 500;
+
+        line-height: 1.5;
+
+        text-align: left;
+    }
+
+
+    /* Information icon */
+    form p::before {
+        content: "ℹ";
+
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 20px;
+        height: 20px;
+
+        margin-right: 7px;
+
+        border-radius: 50%;
+
+        background: #2563eb;
+
+        color: #ffffff;
+
+        font-size: 0.75rem;
+        font-weight: 800;
+    }
+
+
+    /* ==============================
+       REGISTER BUTTON
+    ============================== */
+    button {
+        width: 100%;
+
+        padding: 13px 18px;
+
+        margin-top: 16px;
+
+        border: none;
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #0ea5e9
+            );
+
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 0.95rem;
+        font-weight: 800;
+
+        letter-spacing: 0.7px;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 9px 22px rgba(37, 99, 235, 0.28);
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease;
+    }
+
+
+    button:hover {
+        transform: translateY(-3px);
+
+        background:
+            linear-gradient(
+                135deg,
+                #1d4ed8,
+                #0284c7
+            );
+
+        box-shadow:
+            0 13px 28px rgba(37, 99, 235, 0.36);
+    }
+
+
+    button:active {
+        transform: translateY(0);
+    }
+
+
+    /* ==============================
+       LOGIN TEXT BELOW FORM
+    ============================== */
+    body > p {
+        position: relative;
+        z-index: 1;
+
+        margin-top: 20px;
+
+        color:
+            rgba(255, 255, 255, 0.82);
+
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+
+    /* ==============================
+       LOGIN LINK
+    ============================== */
+    body > p a {
+        display: inline-block;
+
+        margin-left: 5px;
+
+        padding: 7px 15px;
+
+        border-radius: 8px;
+
+        background:
+            rgba(255, 255, 255, 0.12);
+
+        border:
+            1px solid rgba(255, 255, 255, 0.22);
+
+        color: #ffffff;
+
+        font-weight: 700;
+
+        text-decoration: none;
+
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+
+        transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+
+    body > p a:hover {
+        transform: translateY(-2px);
+
+        background:
+            rgba(255, 255, 255, 0.22);
+
+        box-shadow:
+            0 7px 16px rgba(0, 0, 0, 0.15);
+    }
+
+
+    /* ==============================
+       CONTROL EXISTING BR SPACING
+    ============================== */
+    form br {
+        line-height: 7px;
+    }
+
+
+    /* ==============================
+       ANIMATIONS
+    ============================== */
+    @keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-22px);
         }
-        h1{
-            font-size: 4rem;
-            color: #100f0f;
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* ==============================
+       TABLET RESPONSIVE
+    ============================== */
+    @media (max-width: 768px) {
+
+        body {
+            padding: 30px 18px;
+        }
+
+        h1 {
+            margin-bottom: 7px;
+        }
+
+        h2 {
+            margin-bottom: 22px;
+        }
+
+        form {
+            padding: 29px 26px;
+        }
+    }
+
+
+    /* ==============================
+       MOBILE RESPONSIVE
+    ============================== */
+    @media (max-width: 480px) {
+
+        body {
+            padding: 25px 14px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+        }
+
+        h2 {
+            font-size: 0.95rem;
+
+            line-height: 1.5;
+
             margin-bottom: 20px;
-            font-weight: 900;
         }
-        h2{
-            font-size: 1.5rem;
-            color: #070505;
-            margin-bottom: 30px;
-            font-weight: 900;
-        }
-        form{
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        label{
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        input, select{
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button{
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-        button:hover{
-            background-color: #0056b3;
-        }
-            p{
-                margin-top: 15px;
-                font-size: 1rem;
-            }
 
-    </style>
+        form {
+            width: 100%;
+
+            padding: 26px 20px;
+
+            border-radius: 16px;
+        }
+
+        label {
+            font-size: 0.86rem;
+        }
+
+        input,
+        select {
+            padding: 12px;
+
+            font-size: 0.9rem;
+        }
+
+        form p {
+            padding: 11px 12px;
+
+            font-size: 0.8rem;
+        }
+
+        button {
+            padding: 12px;
+
+            font-size: 0.9rem;
+        }
+
+        body > p {
+            font-size: 0.86rem;
+        }
+
+        body > p a {
+            padding: 6px 11px;
+        }
+    }
+
+
+    /* ==============================
+       REDUCED MOTION
+    ============================== */
+    @media (prefers-reduced-motion: reduce) {
+
+        h1,
+        h2,
+        form {
+            animation: none;
+        }
+
+        input,
+        select,
+        button,
+        body > p a {
+            transition: none;
+        }
+    }
+</style>
 </head>
 <body>
     <h1>SLMS Registration</h1>

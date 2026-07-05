@@ -4,97 +4,717 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Dashboard</title>
-    <style>
-        *{
-            margin: 0px;
-            padding: 0px;
-            box-sizing: border-box;
+<style>
+    /* ==============================
+       GLOBAL RESET
+    ============================== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+
+        font-family: "Segoe UI", Arial, sans-serif;
+
+        color: #1e293b;
+
+        background:
+            radial-gradient(
+                circle at top left,
+                rgba(56, 189, 248, 0.14),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at bottom right,
+                rgba(124, 58, 237, 0.12),
+                transparent 35%
+            ),
+            linear-gradient(
+                135deg,
+                #f8fafc,
+                #eef4ff
+            );
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        position: relative;
+        overflow-x: hidden;
+    }
+
+
+    /* ==============================
+       HEADER
+    ============================== */
+    header {
+        width: 100%;
+        min-height: 85px;
+
+        padding: 18px 6%;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #0f172a,
+                #172554,
+                #1e3a8a
+            );
+
+        box-shadow:
+            0 8px 25px rgba(15, 23, 42, 0.18);
+
+        position: relative;
+        overflow: hidden;
+    }
+
+
+    /* Header decorative glow */
+    header::after {
+        content: "";
+
+        position: absolute;
+
+        width: 240px;
+        height: 240px;
+
+        top: -170px;
+        right: 18%;
+
+        border-radius: 50%;
+
+        background:
+            rgba(56, 189, 248, 0.20);
+
+        filter: blur(35px);
+
+        pointer-events: none;
+    }
+
+
+    /* ==============================
+       DASHBOARD TITLE
+    ============================== */
+    h1 {
+        position: relative;
+        z-index: 1;
+
+        margin: 0;
+
+        color: #ffffff;
+
+        font-size: 2rem;
+        font-weight: 800;
+
+        letter-spacing: 0.5px;
+    }
+
+
+    /* SLMS badge */
+    h1::before {
+        content: "SLMS";
+
+        display: inline-block;
+
+        margin-right: 14px;
+
+        padding: 7px 12px;
+
+        border-radius: 9px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #38bdf8,
+                #2563eb
+            );
+
+        color: #ffffff;
+
+        font-size: 0.75rem;
+        font-weight: 800;
+
+        letter-spacing: 1px;
+
+        vertical-align: middle;
+
+        box-shadow:
+            0 5px 15px rgba(37, 99, 235, 0.30);
+    }
+
+
+    /* ==============================
+       NAVIGATION
+    ============================== */
+    nav {
+        position: relative;
+        z-index: 1;
+    }
+
+    nav ul {
+        list-style: none;
+
+        display: flex;
+        align-items: center;
+
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul li {
+        margin: 0;
+    }
+
+
+    /* Logout button */
+    nav ul li a {
+        display: inline-block;
+
+        margin: 0;
+
+        padding: 10px 20px;
+
+        border-radius: 9px;
+
+        background:
+            rgba(239, 68, 68, 0.16);
+
+        border:
+            1px solid rgba(248, 113, 113, 0.35);
+
+        color: #fecaca;
+
+        font-size: 0.92rem;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+
+        transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    nav ul li a:hover {
+        transform: translateY(-2px);
+
+        background: #ef4444;
+
+        color: #ffffff;
+
+        box-shadow:
+            0 7px 18px rgba(239, 68, 68, 0.28);
+    }
+
+
+    /* ==============================
+       MAIN MANAGEMENT CONTAINER
+    ============================== */
+    .manage {
+        width: min(1100px, 90%);
+
+        margin: 65px auto;
+
+        padding: 38px 40px 42px;
+
+        border-radius: 20px;
+
+        background:
+            rgba(255, 255, 255, 0.88);
+
+        border:
+            1px solid rgba(255, 255, 255, 0.95);
+
+        box-shadow:
+            0 20px 50px rgba(15, 23, 42, 0.10);
+
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        position: relative;
+
+        animation:
+            fadeUp 0.75s ease;
+    }
+
+
+    /* Decorative top line */
+    .manage::before {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        width: 55%;
+        height: 4px;
+
+        border-radius: 0 0 10px 10px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #2563eb,
+                #38bdf8,
+                #7c3aed
+            );
+    }
+
+
+    /* ==============================
+       WELCOME USER
+    ============================== */
+    .manage > h3 {
+        margin-bottom: 8px;
+
+        color: #0f172a;
+
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 800;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    /* Add subtitle without HTML change */
+    .manage > h3::after {
+        content: "Manage your leave applications and track request status";
+
+        display: block;
+
+        margin-top: 8px;
+        margin-bottom: 28px;
+
+        color: #64748b;
+
+        font-size: 0.95rem;
+        font-weight: 500;
+
+        line-height: 1.5;
+    }
+
+
+    /* ==============================
+       STAFF CARDS GRID
+    ============================== */
+    .staff-cards {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 28px;
+
+        margin-top: 10px;
+    }
+
+
+    /* ==============================
+       COMMON CARD STYLE
+    ============================== */
+    .staff-cards > div {
+        width: 100%;
+        min-height: 265px;
+
+        padding: 32px;
+
+        border-radius: 18px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        text-align: left;
+
+        position: relative;
+        overflow: hidden;
+
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+
+    /* ==============================
+       APPLY LEAVE CARD
+    ============================== */
+    .leave-request {
+        background:
+            linear-gradient(
+                145deg,
+                #eff6ff,
+                #dbeafe
+            );
+
+        border:
+            1px solid #bfdbfe;
+
+        box-shadow:
+            0 12px 28px rgba(37, 99, 235, 0.10);
+    }
+
+
+    /* ==============================
+       MY LEAVE STATUS CARD
+    ============================== */
+    .staff-manage {
+        background:
+            linear-gradient(
+                145deg,
+                #f5f3ff,
+                #ede9fe
+            );
+
+        border:
+            1px solid #ddd6fe;
+
+        box-shadow:
+            0 12px 28px rgba(124, 58, 237, 0.10);
+    }
+
+
+    /* Decorative card circles */
+    .leave-request::after,
+    .staff-manage::after {
+        content: "";
+
+        position: absolute;
+
+        width: 160px;
+        height: 160px;
+
+        top: -60px;
+        right: -60px;
+
+        border-radius: 50%;
+
+        opacity: 0.18;
+
+        pointer-events: none;
+    }
+
+    .leave-request::after {
+        background: #2563eb;
+    }
+
+    .staff-manage::after {
+        background: #7c3aed;
+    }
+
+
+    /* Card hover */
+    .staff-cards > div:hover {
+        transform: translateY(-7px);
+
+        box-shadow:
+            0 20px 40px rgba(15, 23, 42, 0.15);
+    }
+
+
+    /* ==============================
+       CARD TITLES
+    ============================== */
+    .staff-cards h3,
+    .staff-cards h5 {
+        position: relative;
+        z-index: 1;
+
+        margin-bottom: 12px;
+
+        color: #0f172a;
+
+        font-size: 1.4rem;
+        font-weight: 800;
+    }
+
+
+    /* Apply leave icon */
+    .leave-request h5::before {
+        content: "📝";
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 54px;
+        height: 54px;
+
+        margin-bottom: 18px;
+
+        border-radius: 14px;
+
+        background:
+            rgba(37, 99, 235, 0.12);
+
+        font-size: 1.55rem;
+    }
+
+
+    /* Leave status icon */
+    .staff-manage h3::before {
+        content: "📊";
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 54px;
+        height: 54px;
+
+        margin-bottom: 18px;
+
+        border-radius: 14px;
+
+        background:
+            rgba(124, 58, 237, 0.12);
+
+        font-size: 1.55rem;
+    }
+
+
+    /* ==============================
+       CARD DESCRIPTION
+    ============================== */
+    .staff-cards p {
+        position: relative;
+        z-index: 1;
+
+        margin-bottom: 22px;
+
+        color: #64748b;
+
+        font-size: 1rem;
+        font-weight: 500;
+
+        line-height: 1.6;
+    }
+
+
+    /* ==============================
+       CARD BUTTONS
+    ============================== */
+    .staff-cards a {
+        position: relative;
+        z-index: 1;
+
+        display: inline-block;
+
+        margin: 0;
+
+        padding: 11px 22px;
+
+        border-radius: 9px;
+
+        color: #ffffff;
+
+        font-size: 0.95rem;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+
+    /* Apply button */
+    .leave-request a {
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #0ea5e9
+            );
+
+        box-shadow:
+            0 8px 18px rgba(37, 99, 235, 0.25);
+    }
+
+
+    /* View Leave button */
+    .staff-manage a {
+        background:
+            linear-gradient(
+                135deg,
+                #7c3aed,
+                #8b5cf6
+            );
+
+        box-shadow:
+            0 8px 18px rgba(124, 58, 237, 0.25);
+    }
+
+
+    .staff-cards a:hover {
+        transform: translateY(-3px);
+
+        color: #ffffff;
+
+        box-shadow:
+            0 12px 24px rgba(15, 23, 42, 0.20);
+    }
+
+
+    /* ==============================
+       ANIMATION
+    ============================== */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
         }
-        body{
-            background-color: #f6f0dc;
-            /* min-height: 100vh; */
-            display: flex;
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* ==============================
+       TABLET RESPONSIVE
+    ============================== */
+    @media (max-width: 768px) {
+
+        header {
+            padding: 18px 4%;
+
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
 
+            gap: 18px;
+
+            text-align: center;
         }
-        h1{
-            font-size: 32px;
-            color: #100f0f;
-            margin-bottom: 20px;
-            font-weight: 900;
+
+        h1 {
+            font-size: 1.7rem;
         }
-        header{
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            }
-                nav ul{
-                    list-style: none;
-                    display: flex;
-                }
-                nav ul li{
-                    margin-left: 20px;
-                }
-                nav ul li a{
-                    text-decoration: none;
-                    color: #333;
-                    font-weight: 600;
-                }
-        .manage{
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 80%;
+
+        .manage {
+            width: 92%;
+
+            margin: 40px auto;
+
+            padding: 30px 28px;
         }
-        .staff-cards{
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
+
+        .staff-cards {
+            grid-template-columns: 1fr;
         }
-            .staff-cards div{
-                background-color: #f2f2f2;
-                padding: 20px;
-                border-radius: 5px;
-                width: 45%;
-                text-align: center;
-            }
-            .staff-cards div h3, .staff-cards div h5{
-                margin-bottom: 10px;
-            }
-            .staff-cards div p{
-                margin-bottom: 20px;
-            }
-            .staff-cards div{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
+    }
 
 
-            }
+    /* ==============================
+       MOBILE RESPONSIVE
+    ============================== */
+    @media (max-width: 480px) {
+
+        header {
+            padding: 16px 12px;
+        }
+
+        h1 {
+            font-size: 1.45rem;
+        }
+
+        h1::before {
+            display: block;
+
+            width: fit-content;
+
+            margin: 0 auto 10px;
+        }
+
+        nav ul li a {
+            padding: 9px 16px;
+
+            font-size: 0.84rem;
+        }
+
+        .manage {
+            width: 94%;
+
+            margin: 28px auto;
+
+            padding: 25px 20px;
+
+            border-radius: 16px;
+        }
+
+        .manage > h3 {
+            font-size: 1.4rem;
+        }
+
+        .manage > h3::after {
+            font-size: 0.85rem;
+
+            margin-bottom: 22px;
+        }
+
+        .staff-cards {
+            gap: 18px;
+        }
+
+        .staff-cards > div {
+            min-height: 235px;
+
+            padding: 24px;
+
+            border-radius: 14px;
+        }
+
+        .staff-cards h3,
+        .staff-cards h5 {
+            font-size: 1.25rem;
+        }
+
+        .staff-cards p {
+            font-size: 0.9rem;
+        }
+
+        .staff-cards a {
+            padding: 10px 18px;
+
+            font-size: 0.88rem;
+        }
+    }
 
 
-        a{
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px 10px;
+    /* ==============================
+       REDUCED MOTION
+    ============================== */
+    @media (prefers-reduced-motion: reduce) {
+
+        .manage {
+            animation: none;
         }
-        a:hover{
-            background-color: #0056b3;
+
+        .staff-cards > div,
+        .staff-cards a,
+        nav ul li a {
+            transition: none;
         }
-    </style>
+    }
+</style>
 </head>
 <body>
     <header>
